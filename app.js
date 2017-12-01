@@ -1,13 +1,23 @@
-const Koa = require('koa');
-
-const app = new Koa();
 const port = 3002;
+const Koa = require('koa');
+const app = new Koa();
 
-app.use(async (ctx, next) => {
-  await next();
-  ctx.response.type = 'text/html';
-  ctx.response.body = '<h1>hello gena</h1>';
+// assets 静态资源
+
+// xtemplate 模板使用
+var xtpl = require('xtpl/lib/koa');
+xtpl(app,{
+  views: 'views'
 });
 
+// bodyParser
+const bodyParser = require('koa-bodyparser');
+app.use(bodyParser());
+
+// controller
+const controller = require('./controller');
+app.use(controller());
+
 app.listen(port);
+
 console.log(`app started at port ${port}...`);
